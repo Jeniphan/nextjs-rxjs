@@ -2,10 +2,24 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import { useEffect } from 'react'
+import { HttpService } from '@/services/httpClient.service'
+import { first, take } from 'rxjs'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
+  const httpClient = new HttpService()
+
+  useEffect(() => {
+    let data = httpClient.get("https://jsonplaceholder.typicode.com/comments").pipe(first()).subscribe(
+      data => {
+        console.log(data);
+      }
+    )
+  }, [])
+
   return (
     <>
       <Head>
